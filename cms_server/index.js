@@ -3,7 +3,7 @@ const database = require('./config/database');
 const dotenv = require('dotenv');
 const cors = require('cors');
 
-const { getAllContents, createContent } = require('./controllers/contentController');
+const { getAllContents, createContent, updateContent, deleteContent } = require('./controllers/contentController');
 
 // Load environment variables
 dotenv.config();
@@ -30,6 +30,9 @@ app.listen(port, () => {
 
 app.get('/content', getAllContents);
 app.post('/content', createContent);
+app.put('/content/:id', updateContent);
+app.delete('/content/:id', deleteContent);
+
 app.get('/user', (req, res) => {
   res.send('User');
 });

@@ -28,8 +28,7 @@ const getContentById = async (req, res) => {
 }
 
 const createContent = async (req, res) => {
-  const { title, description, url } = req.body;
-  const content = new Content({ title, description, url });
+  const content = new Content(req.body);
   try {
     const newContent = await content.save();
     res.status(201).json(newContent);
@@ -59,9 +58,28 @@ const updateContent = async (req, res) => {
   }
 }
 
+const deleteContent = async (req, res) => {
+  const id = req.params.id;
+  try {
+    const content
+      = await Content.findById(id);
+    if (content) {
+      await content.remove();
+      res.json({ message: "Content deleted!" });
+    }
+    else {
+      res.status(404).json({ message: "Content not found!" });
+    }
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   getAllContents,
   getContentById,
   createContent,
-  updateContent
+  updateContent,
+  deleteContent,
 };

@@ -4,7 +4,10 @@ import axios from 'axios'
 
 function App() {
   const [posts, setPosts] = useState([])
-
+  const [title, setTitle] = useState('')
+  const [slug, setSlug] = useState('')
+  const [content, setContent] = useState('')
+  const [excerpt, setExcerpt] = useState('')
   useEffect(() => {
     axios.get('http://localhost:3000/content').then((res) => {
       console.log(res.data)
@@ -14,13 +17,14 @@ function App() {
     });
   }, []);
 
-  const handleCreate = (e) => {
-    if (e.target.title.value === '' || e.target.slug.value === '' || e.target.content.value === '' || e.target.excerpt.value === '') {
+  const handleCreatePost = () => {
+    console.log(title, slug, content, excerpt)
+    if (title && slug && content && excerpt) {
       const newPost = {
-        title: e.target.title.value,
-        slug: e.target.slug.value,
-        content: e.target.content.value,
-        excerpt: e.target.excerpt.value,
+        title: title,
+        slug: slug,
+        content: content,
+        excerpt: excerpt,
         publishDate: new Date().toISOString(),
       };
       axios.post('http://localhost:3000/content',
@@ -33,16 +37,28 @@ function App() {
     }
   }
 
+  const handleDeletePost = (id) => {
+    axios.delete(`http://localhost:3000/content/${id}`).then((res) => {
+      const newPosts = posts.filter((post) => {
+        return post._id !== id;
+      });
+      setPosts(newPosts);
+    }).catch((error) => {
+      console.log(error);
+    });
+  }
+
+
   return (
     <>
       <h1>Content Management System</h1>
-      <form action="/content" method="POST">
-        <input type="text" name="title" placeholder="Title" />
-        <input type="text" name="slug" placeholder="Slug" />
-        <textarea name="content" placeholder="Content"></textarea>
-        <input type="text" name="excerpt" placeholder="Excerpt" />
-        <button onClick={handleCreate} type="submit">Create</button>
-      </form>
+      <div>
+        <input type="text" name="title" placeholder="Title" onChange={(e) => setTitle(e.target.value)} />
+        <input type="text" name="slug" placeholder="Slug" onChange={(e) => setSlug(e.target.value)} />
+        <textarea name="content" placeholder="Content" onChange={(e) => setContent(e.target.value)} />
+        <input type="text" name="excerpt" placeholder="Excerpt" onChange={(e) => setExcerpt(e.target.value)} />
+        <button onClick={handleCreatePost} >Create</button>
+      </div>
       <table>
         <thead>
           <tr>
@@ -67,10 +83,7 @@ function App() {
                   <td>
                     <a href={`/content/${content._id}`}>View</a>
                     <a href={`/content/${content._id}/edit`}>Edit</a>
-                    <form action={`/content/${content._id}?_method=DELETE`} method="POST">
-                      <button type="submit">Delete</button>
-
-                    </form>
+                    <button onClick={() => handleDeletePost(content._id)}>Delete</button>
                   </td>
                 </tr>
               </>

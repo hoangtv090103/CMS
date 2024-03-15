@@ -30,6 +30,6 @@ const ContentSchema = new mongosse.Schema({
   }
 });
 
-const Content = mongosse.model('User', ContentSchema);
+const Content = mongosse.model('Content', ContentSchema);
 
 module.exports = Content;
