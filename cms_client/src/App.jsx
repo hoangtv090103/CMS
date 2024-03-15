@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import './index.css'
 import axios from 'axios'
 
 function App() {
@@ -59,15 +60,15 @@ function App() {
         <input type="text" name="excerpt" placeholder="Excerpt" onChange={(e) => setExcerpt(e.target.value)} />
         <button onClick={handleCreatePost} >Create</button>
       </div>
-      <table>
-        <thead>
+      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
           <tr>
-            <th>Title</th>
-            <th>Slug</th>
-            <th>Content</th>
-            <th>Excerpt</th>
-            <th>Updated At</th>
-            <th>Actions</th>
+            <th scope="col" className="px-6 py-3">Title</th>
+            <th scope="col" className="px-6 py-3">Slug</th> 
+            <th scope="col" className="px-6 py-3">Content</th>
+            <th scope="col" className="px-6 py-3">Excerpt</th>
+            <th scope="col" className="px-6 py-3">Updated At</th>
+            <th scope="col" className="px-6 py-3">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -75,12 +76,12 @@ function App() {
             return (
               <>
                 <tr key={content._id}>
-                  <td>{content.title}</td>
-                  <td>{content.slug}</td>
-                  <td>{content.content}</td>
-                  <td>{content.excerpt}</td>
-                  <td>{content.updatedAt}</td>
-                  <td>
+                  <td className="px-6 py-4">{content.title}</td>
+                  <td className="px-6 py-4">{content.slug}</td>
+                  <td className="px-6 py-4">{content.content}</td>
+                  <td className="px-6 py-4">{content.excerpt}</td>
+                  <td className="px-6 py-4">{content.updatedAt}</td>
+                  <td className="px-6 py-4">
                     <a href={`/content/${content._id}`}>View</a>
                     <a href={`/content/${content._id}/edit`}>Edit</a>
                     <button onClick={() => handleDeletePost(content._id)}>Delete</button>
